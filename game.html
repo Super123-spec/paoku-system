@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html manifest="manifest.mf">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Type" content="text/html;">
+    <meta http-equiv="Content-Script-Type" content="text/javascript">
+    <meta http-equiv="Content-Style-Type" content="text/css">
+    <meta charset="utf-8">
+    <meta name="viewport" id="viewport" content="width = device-width, initial-scale = 1, minimum-scale = 1, maximum-scale = 1, user-scalable=no">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta equiv="Expires" content="0">
+    <title>地铁跑酷</title>
+    <style type="text/css">
+        body {
+            -webkit-user-select: none;
+            margin: 0 auto;
+            background: #000;
+        }
+        
+        #play68box {
+            top: 25%;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .questionClass {
+            background-color: rgba(244, 164, 96, 0.8);
+            width: 96%;
+            font-size: 20px;
+            color: black;
+            height: 90%;
+            margin: 2% 2%;
+            padding: 10px 3%;
+            padding-top: 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        
+        .questionClass h2 {
+            font-size: 24px;
+            line-height: 20px;
+            margin-bottom: 5px;
+        }
+        
+        .questionClass li label {
+            font-size: 20px;
+            line-height: 20px;
+            margin-top: 5px;
+            padding: 10px;
+            display: block;
+        }
+        
+        .questionClass li input {
+            margin-right: 20px;
+            vertical-align: middle;
+        }
+        
+        .BouncedStyle {
+            width: 47px;
+            height: 67px;
+            position: absolute;
+            z-index: 99999;
+            /* padding-left: 0px;
+            padding-top: 2px; */
+            left: 8px;
+            bottom: 26%;
+            background-image: url(images/paihangbang.png);
+            background-size: 74px;
+            background-repeat: no-repeat;
+            background-position: -14px 21px;
+            border: none;
+            background-color: transparent;
+            z-index: 9999999;
+        }
+        
+        .form-control01 {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            margin: 604px 2 30px 2px;
+            top: 662px;
+            z-index: 9999999;
+        }
+        
+        .form-controls {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            margin: 616px -13px 0 2px;
+            z-index: 9999999;
+        }
+        
+        canvas#gcvs {
+            width: 100%;
+            background-size: 100% 100%;
+        }
+    </style>
+
+    <script type="text/javascript" src="js/jquery-1.7.min.js"></script>
+
+    <!-- <script type="text/javascript">
+        document.body.style.cssText = document.body.style.cssText + '; -webkit-transform: scale(' + size + ');-webkit-transform-origin: 0 0;';
+    </script> -->
+    <script type="text/javascript" src="js/jsondata.js"></script>
+    <script type="text/javascript" src="js/play68.js?v1"></script>
+    <script type="text/javascript" src="js/gm16.min.js"></script>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+
+</head>
+
+<body onorientationchange="rtalt()" style="-webkit-transform-origin: 0px 0px 0px;">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
+    <link type="text/css" rel="stylesheet" href="css/atom.css">
+    <link type="text/css" rel="stylesheet" href="css/global.css">
+    <link type="text/css" rel="stylesheet" href="css/open.css">
+    <link type="text/css" rel="stylesheet" href="css/modalBox.css">
+
+    <a href="invite.html"><img src="images/renyuan.png" class="form-controls"></a>
+    <a href="index6.html"><img src="images/shangcheng.png" class="form-control01"></a>
+    <div style="width:100%;overflow:hidden; position:relative;">
+        <div id="chf2" style="position:relative;width:100%;margin-top: 0px;">
+            <canvas id="gcvs" onclick=""></canvas>
+        </div>
+
+        <div style="position:absolute; z-index:99999; font-size:16px; line-height:22px; padding-left:5px; padding-top:5px; font-family:THeiti,'微软雅黑'; left:0; top:0; width:200px; color:#fff;">
+            答题分数：
+            <Span id="jfen">0</Span>
+        </div>
+
+        <div class="wrapper" id="wrapper" style="z-index: 99999;display: block;">
+            <div class="open-has ">
+                <div class="mod-chest">
+                    <div class="chest-close show ">
+                        <div class="gift"></div>
+                    </div>
+                    <div class="chest-open ">
+                        <div class="mod-chest-cont open-cont">
+                            <div class="content" id="content">
+                                恭喜你，获得
+                                <div class="gift">
+                                    <div class="icon"><img src="ber/chest-icon-zuan.png"></div> x 500
+                                    <div class="func">
+                                        <button class="chest-btn" id="chest-btn" style="outline: none;" onclick='hide()'>确定</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <link type="text/css" rel="stylesheet" href="sidebar.css">
+        <div style="position:absolute; background-color:rgba(0,0,0,0.3); left:0; top:0; z-index:100000; display:none;width:100%; height:100%; " id="QustionPop">
+            <div class="questionClass">
+                <Div style="line-height:22px;">回答以下问题，才能继续游戏</Div>
+                <div id="QuestionLi"> </div>
+                <div style=" padding-top:20px; width:60%; margin:0 auto;">
+                    <input type="button" value="确认" style="height:32px; line-height:32px; width:100%;background-color:rgb(0,191,255)" onClick="SureFun(this)" />
+                </div>
+            </div>
+        </div>
+
+        <button id="triggerBtn" class="BouncedStyle"></button>
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span id="closeBtn" class="close">×</span>
+                </div>
+                <div style="height:100px;"></div>
+                <div class="ques-section-item">
+                    <div class="ques-section-card">
+                        <div class="ques-card-head ques-card-bul">
+                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="323px" height="30px" xml:space="preserve">
+                            <defs>
+                                <pattern id="water" width=".25" height="1.1" patternContentUnits="objectBoundingBox">
+                                    <path fill="#fff" d="M0.25,1H0c0,0,0-0.659,0-0.916c0.083-0.303,0.158,0.334,0.25,0C0.25,0.327,0.25,1,0.25,1z"></path>
+                                </pattern>
+                                <g id="eff">
+                                    <rect fill="url(#water)" x="-119.461" y="0" width="1200" height="120" opacity="0.3">
+                                        <animate attributeType="xml" attributeName="x" from="-300" to="0" repeatCount="indefinite" dur="10s"></animate>
+                                    </rect>
+                                    <rect fill="url(#water)" y="5" width="1600" height="125" opacity="0.3" x="-399.447">
+                                        <animate attributeType="xml" attributeName="x" from="-400" to="0" repeatCount="indefinite" dur="13s"></animate>
+                                    </rect>
+                                </g>
+                            </defs>
+                            <!-- <use xlink:href="#eff" opacity="1" style="mix-blend-mode:normal;"></use> -->
+                        </svg>
+                        </div>
+                        <div class="ques-card-title ques-card-title-top">个人排行榜
+                        </div>
+                        <ul class="ques-card-list" id="QuestionLi1">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="js/people.js"></script>
+        <script type="text/javascript" src="js/modalBox.js"></script>
+        <script type="text/javascript" src="js/play68bar.js"></script>
+        <script type="text/javascript">
+            document.getElementById("QustionPop").addEventListener('touchmove', function(e) {
+                e.preventDefault();
+            }, false);
+            0
+            $(".chest-close").click(function() {
+
+                $(this).addClass("shake");
+                var that = this;
+
+                this.addEventListener("webkitAnimationEnd", function() {
+
+                    $(that).closest(".open-has").addClass("opened");
+                    setTimeout(function() {
+                        $(that).removeClass("show");
+                        $(that).closest(".mod-chest").find(".chest-open").addClass("show");
+                        setTimeout(function() {
+                            $(".chest-open").addClass("blur");
+                        }, 200)
+                    }, 200)
+                }, false);
+            })
+
+            document.getElementById("chest-btn").style.outline = "none";
+
+            function hide() {
+                var mychar = document.getElementById("wrapper").style.display = "none";
+
+            }
+        </script>
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="./css/register.css">
+    <link rel="stylesheet" href="./css/Fytx_Tips.css">
+    <script src="./js/jquery.min.js"></script>
+    <script src="./js/Fytx_Tips.js"></script>
+    <script src="./js/Fytx_Tips_Config.js"></script>
+</head>
+
+<body>
+    <div class="register-body">
+        <div class="register-top">
+
+        </div>
+        <div class="login">
+            <div class="information">
+                <div class="topic">码上行注册</div>
+            </div>
+            <div class="register-list">
+                <form id="loginForm" action="" class="">
+                    <div class="carName">
+                        <span class="ionic_use">
+                    <i class="iconfont icon-yonghuming"></i>
+                    <input id="name" type="text" class="register-usernames" placeholder="请输入用户名"  style=" background-color: #ffffff;">     
+                </span>
+                    </div>
+                    <div class="carPassword">
+                        <span class="ionic_pass">
+                    <i class="iconfont icon-mima"></i>
+                    <input id="password" type="password" class="register-passwords" placeholder="请输入密码">                    
+                </span>
+                    </div>
+                    <div class="carPassword">
+                        <span class="ionic_pass">
+			        <i class="iconfont icon-mima"></i>
+			        <input id="InvitationCode"  class="register-invitation">                    
+			    </span>
+                    </div>
+                    <div>
+                        <input id="submit" type="button" class="register-bottom" value="注  册" onclick="registerOnclick()" />
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="register-return" class="register-return">返回游戏</div>
+    </div>
+    <script>
+        function confirm() {
+            var userName = $('#name').val();
+            var passWord = $('#password').val();
+            var InvitationCode = $('#InvitationCode').val();
+            var jsonData = {
+                "userName": userName,
+                "passWord": passWord
+            }; //.net后台处理的数据
+            if (userName == "" || passWord == "") {
+                $.alert("", "用户密码不能为空！");
+            } else {
+                $.ajax({
+                    url: 'http://47.114.189.73:8080/GameUserQuery/SelectById?id=1',
+                    // url: 'http://47.114.189.73:8080/login/register?name='+ userName + "&password=" + passWord +"&invitationCode=" + InvitationCode, 
+                    data: {
+
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        console.log(data)
+                        $('#InvitationCode').val(data.data.list[0].invitationCode);
+                    },
+                    error: function(data) {
+
+                    }
+                })
+            }
+        }
+
+        $('#submit').click(function() {
+            confirm();
+            return false;
+        })
+
+        $(document).ready(function() {
+            $.ajax({
+                url: 'http://47.114.189.73:8080/GameUserQuery/SelectById?id=1',
+                // url: 'http://47.114.189.73:8080/login/register?name='+ userName + "&password=" + passWord +"&invitationCode=" + InvitationCode, 
+                data: {
+
+                },
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data)
+                    $('#InvitationCode').val(data.data.list[0].invitationCode);
+                },
+                error: function(data) {
+
+                }
+            })
+        })
+
+        function registerOnclick() {
+            $.alert("恭喜你", "注册成功！");
+        }
+        document.getElementById("register-return").onclick = function() {
+                window.location.href = "game.html";
+            }
+    </script>
+</body>
+
+</html>
